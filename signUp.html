@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- <link href="../static/css/signup.css" rel="stylesheet">
+    <script src="../static/js/jquery-1.11.2.js"></script>
+    <script src="../static/js/signUp.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+		
+		<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+		 rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js">
+		</script>
+
+    <title>PEVITA - Add New Client</title>
+
+    <script>
+		function buka_nr(){
+			var pilih = document.getElementById('t_file');
+			var pilih = pilih.options[pilih.selectedIndex].value;
+			switch(pilih){
+				case "1":
+					document.getElementById('nr1').disabled = false;
+					for(var i = 2; i <= 6; i++){
+							document.getElementById('nr'+[i]).disabled = true;
+					}
+					document.getElementById('file_custom_coa').style.display = "none";
+					break;
+				case "2":
+					document.getElementById('nr1').disabled = false;
+					document.getElementById('nr2').disabled = false;
+					for(var i = 3; i <= 6; i++){
+							document.getElementById('nr'+[i]).disabled = true;
+					}
+					document.getElementById('file_custom_coa').style.display = "none";
+					break;
+				case "3":
+					document.getElementById('nr1').disabled = true;
+					document.getElementById('nr2').disabled = true;
+					for(var i = 3; i <= 6; i++){
+							document.getElementById('nr'+[i]).disabled = false;
+					}
+					document.getElementById('file_custom_coa').style.display = "none";
+					break;
+				case "4":
+					for(var i = 1; i <= 6; i++){
+							document.getElementById('nr'+[i]).disabled = true;
+					}
+					document.getElementById('file_custom_coa').style.display = "inline";
+					break;
+				default:
+					for(var i = 1; i <= 6; i++){
+							document.getElementById('nr'+[i]).disabled = true;
+					}
+					document.getElementById('file_custom_coa').style.display = "none";
+			}
+		}
+
+		function jadi_readOnly(){
+			// Ngubah semua tag input jadi read only
+			var form = document.getElementById("formnya");
+			var elements = form.elements;
+			for (var i = 0, len = elements.length; i < len; ++i) {
+					elements[i].readOnly = true;
+			}
+
+			// Disable dropdown COA
+			document.getElementById("t_file").style.display = "none";
+			
+			// Ngilangin button
+			document.getElementById("submit_btn").style.display = "none";
+
+			// Nampilin animasi loading
+			document.getElementById("loading_ani").style.display = "inline";
+
+			// Bikin tombol enter ngga ngaruh kalo dipencet
+			var key; 
+			if(window.event){  
+					key = window.event.keyCode; 
+			}else{ 
+					key = e.which;      
+			} 
+			if(key == 13){ 
+					return false; 
+			}
+		}
+		
+		function tanpa_Trello(){
+			cek = document.getElementById("Trello").checked;
+			if(cek == false){
+				document.getElementById("categories-L").style.display = "none";
+				document.getElementById("categories").style.display = "none";
+			} else {
+				document.getElementById("categories-L").style.display = "block";
+				document.getElementById("categories").style.display = "block";
+			}
+		}
+		
+		function tanpa_Xero(){
+			cek = document.getElementById("Xero").checked;
+			if(cek == false){
+					document.getElementById('al-L').style.display = "none";
+					document.getElementById('al').style.display = "none";
+					document.getElementById('kota-L').style.display = "none";
+					document.getElementById('kota').style.display = "none";
+					document.getElementById('provinsi-L').style.display = "none";
+					document.getElementById('provinsi').style.display = "none";
+					document.getElementById('kode_pos-L').style.display = "none";
+					document.getElementById('kode_pos').style.display = "none";
+					document.getElementById('atas_nama-L').style.display = "none";
+					document.getElementById('atas_nama').style.display = "none";
+					document.getElementById('t_file-L').style.display = "none";
+					document.getElementById('t_file').style.display = "none";
+					document.getElementById('nr').style.display = "none";
+				} else {
+					document.getElementById('al-L').style.display = "block";
+					document.getElementById('al').style.display = "block";
+					document.getElementById('kota-L').style.display = "block";
+					document.getElementById('kota').style.display = "block";
+					document.getElementById('provinsi-L').style.display = "block";
+					document.getElementById('provinsi').style.display = "block";
+					document.getElementById('kode_pos-L').style.display = "block";
+					document.getElementById('kode_pos').style.display = "block";
+					document.getElementById('atas_nama-L').style.display = "block";
+					document.getElementById('atas_nama').style.display = "block";
+					document.getElementById('t_file-L').style.display = "block";
+					document.getElementById('t_file').style.display = "block";
+					document.getElementById('nr').style.display = "block";
+				}
+		}
+	</script>
+</head>
+
+<body>
+    
+    <div class="container">
+
+			<div class="header">
+					<nav>
+							<ul class="nav nav-pills pull-right">
+							</ul>
+					</nav>
+					<h1 class="text-muted">Pevita Robot</h1><br>
+			</div>
+
+			<form id="formnya" action="{{ url_for('yea') }}" 
+			 method="POST" onsubmit="jadi_readOnly();">
+			 
+				Klik pilihan yang tidak perlu dibuatkan<br>
+				
+			 	<input checked name="Gdrive" id="Gdrive" type="checkbox" value="Google Drive"
+				 data-toggle="toggle" data-size="sm" data-on="Google Drive" data-off="Google Drive"
+				 data-onstyle="warning">
+
+				<input checked name="Slack" id="Slack" type="checkbox" value="Slack"
+				 data-toggle="toggle" data-size="sm" data-width="100" data-on="Slack" data-off="Slack"
+				 data-onstyle="warning">
+
+				<input checked name="Trello" id="Trello" type="checkbox" value="Trello"
+				 data-toggle="toggle" data-size="sm" data-width="100" data-on="Trello" data-off="Trello"
+				 data-onstyle="warning" onchange="tanpa_Trello();">
+
+				<input checked name="Xero" id="Xero" type="checkbox" value="Xero"
+				 data-toggle="toggle" data-size="sm" data-width="100" data-on="Xero" data-off="Xero"
+				 data-onstyle="warning" onchange="tanpa_Xero()">
+
+				<br><br>
+
+				<div id="inputName-all" class="form-group row">
+					<label id="inputName-L" class="col-sm-2 col-form-label">
+						Nama perusahaan / organisasi / individu:
+					</label>
+					<div class="col-sm-4">
+						<input  class="form-control" type="text" name="inputName" id="inputName">
+					</div>
+				</div>
+
+				<div id="categories-all" class="form-group row">
+					<label id="categories-L" class="col-sm-2 col-form-label">Kategorinya apa ya? (buat di Trello)</label>
+					<div class="col-sm-4">
+						<select class="form-control" name="categories" id="categories">
+							<option value="5e7c0e2750896663c5a86ba3">Creative-Service</option> 
+							<option value="5c5807a8aed1271c0a3af2d5">Food-Beverages</option>
+							<option value="5fb5e43f8a078f7a8a7f6426">Logistics</option>
+							<option value="5c58088a4148fb5594f2feb9">Offboard-Clients</option>
+							<option value="5cf60768db0e7c451c7d6d10">Payroll-x-HReasily</option>
+							<option value="5c5808c968859060f6ef3e78">Retail</option>
+							<option value="5c4b1a172d58e668d64b1d91">Technology</option>
+							<option value="5e3edb72335b1d51127517bc">Property</option>
+						</select>
+					</div>
+				</div>
+
+				<div id="al-all" class="form-group row">
+					<label id="al-L" class="col-sm-2 col-form-label">Alamat (nama jalan / PO box):</label>
+					<div class="col-sm-4">
+						<input  class="form-control" type="text" id="al" name="al">
+					</div>
+				</div>
+
+				<div id="kota-all" class="form-group row">
+					<label id="kota-L" class="col-sm-2 col-form-label">Kota :</label>
+					<div class="col-sm-4">
+						<input  class="form-control" type="text" id="kota" name="kota">
+					</div>
+				</div>
+
+				<div id="provinsi-all" class="form-group row">
+					<label id="provinsi-L" class="col-sm-2 col-form-label">Provinsi:</label>
+					<div class="col-sm-4">
+						<input  class="form-control" type="text" id="provinsi" name="provinsi">
+					</div>
+				</div>
+
+				<div id="kode_pos-all" class="form-group row">
+					<label id="kode_pos-L" class="col-sm-2 col-form-label">Kode pos:</label>
+					<div class="col-sm-4">
+						<input  class="form-control" type="text" id="kode_pos" name="kode_pos"
+							pattern="[0-9]{5}" title="Isinya 5 angka dong :(">
+					</div>
+				</div>
+
+				<!-- <div class="form-group row">
+					<label class="col-sm-2 col-form-label">Negara:</label>
+					<div class="col-sm-4">
+						<select class="form-control" name="negara">
+							<option>Afghanistan</option>
+							<option>Åland Islands</option>
+							<option>Albania</option>
+							<option>Algeria</option>
+							<option>American Samoa</option>
+							<option>Andorra</option>
+							<option>Angola</option>
+							<option>Anguilla</option>
+							<option>Antarctica</option>
+							<option>Antigua and Barbuda</option>
+							<option>Argentina</option>
+							<option>Armenia</option>
+							<option>Aruba</option>
+							<option>Austria</option>
+							<option>Azerbaijan</option>
+							<option>Bahamas</option>
+							<option>Bahrain</option>
+							<option>Bangladesh</option>
+							<option>Barbados</option>
+							<option>Belarus</option>
+							<option>Belgium</option>
+							<option>Belize</option>
+							<option>Benin</option>
+							<option>Bermuda</option>
+							<option>Bhutan</option>
+							<option>Bolivia</option>
+							<option>Bosnia and Herzegovina</option>
+							<option>Botswana</option>
+							<option>Bouvet Island</option>
+							<option>Brazil</option>
+							<option>British Indian Ocean Territory</option>
+							<option>Brunei Darussalam</option>
+							<option>Bulgaria</option>
+							<option>Burkina Faso</option>
+							<option>Burundi</option>
+							<option>Cambodia</option>
+							<option>Cameroon</option>
+							<option>Cape Verde</option>
+							<option>Cayman Islands</option>
+							<option>Central African Republic</option>
+							<option>Chad</option>
+							<option>Chile</option>
+							<option>China</option>
+							<option>Christmas Island</option>
+							<option>Cocos (Keeling) Islands</option>
+							<option>Colombia</option>
+							<option>Comoros</option>
+							<option>Congo</option>
+							<option>Congo, Democratic Republic of the</option>
+							<option>Cook Islands</option>
+							<option>Costa Rica</option>
+							<option>Côte d'Ivoire</option>
+							<option>Croatia</option>
+							<option>Cuba</option>
+							<option>Curaçao</option>
+							<option>Cyprus</option>
+							<option>Czech Republic</option>
+							<option>Denmark</option>
+							<option>Djibouti</option>
+							<option>Dominica</option>
+							<option>Dominican Republic</option>
+							<option>Ecuador</option>
+							<option>Egypt</option>
+							<option>El Salvador</option>
+							<option>Equatorial Guinea</option>
+							<option>Eritrea</option>
+							<option>Estonia</option>
+							<option>Eswatini</option>
+							<option>Ethiopia</option>
+							<option>Falkland Islands (Malvinas)</option>
+							<option>Faroe Islands</option>
+							<option>Fiji</option>
+							<option>Finland</option>
+							<option>France</option>
+							<option>French Guiana</option>
+							<option>French Polynesia</option>
+							<option>French Southern Territories</option>
+							<option>Gabon</option>
+							<option>Gambia</option>
+							<option>Georgia</option>
+							<option>Germany</option>
+							<option>Ghana</option>
+							<option>Gibraltar</option>
+							<option>Greece</option>
+							<option>Greenland</option>
+							<option>Grenada</option>
+							<option>Guadeloupe</option>
+							<option>Guam</option>
+							<option>Guatemala</option>
+							<option>Guernsey</option>
+							<option>Guinea</option>
+							<option>Guinea-Bissau</option>
+							<option>Guyana</option>
+							<option>Haiti</option>
+							<option>Heard Island and McDonald Islands</option>
+							<option>Holy See (Vatican City State)</option>
+							<option>Honduras</option>
+							<option>Hong Kong</option>
+							<option>Hungary</option>
+							<option>Iceland</option>
+							<option>India</option>
+							<option selected>Indonesia</option>
+							<option>Iran, Islamic Republic of</option>
+							<option>Iraq</option>
+							<option>Ireland</option>
+							<option>Isle of Man</option>
+							<option>Israel</option>
+							<option>Italy</option>
+							<option>Jamaica</option>
+							<option>Japan</option>
+							<option>Jersey</option>
+							<option>Jordan</option>
+							<option>Kazakhstan</option>
+							<option>Kenya</option>
+							<option>Kiribati</option>
+							<option>Korea, North</option>
+							<option>Korea, South</option>
+							<option>Kuwait</option>
+							<option>Kyrgyzstan</option>
+							<option>Laos</option>
+							<option>Latvia</option>
+							<option>Lebanon</option>
+							<option>Lesotho</option>
+							<option>Liberia</option>
+							<option>Libya</option>
+							<option>Liechtenstein</option>
+							<option>Lithuania</option>
+							<option>Luxembourg</option>
+							<option>Macau</option>
+							<option>Macedonia</option>
+							<option>Madagascar</option>
+							<option>Malawi</option>
+							<option>Malaysia</option>
+							<option>Maldives</option>
+							<option>Mali</option>
+							<option>Malta</option>
+							<option>Marshall Islands</option>
+							<option>Martinique</option>
+							<option>Mauritania</option>
+							<option>Mauritius</option>
+							<option>Mayotte</option>
+							<option>Mexico</option>
+							<option>Micronesia</option>
+							<option>Moldova</option>
+							<option>Monaco</option>
+							<option>Mongolia</option>
+							<option>Montenegro</option>
+							<option>Montserrat</option>
+							<option>Morocco</option>
+							<option>Mozambique</option>
+							<option>Myanmar</option>
+							<option>Namibia</option>
+							<option>Nauru</option>
+							<option>Nepal</option>
+							<option>Netherlands</option>
+							<option>Netherlands Antilles</option>
+							<option>New Caledonia</option>
+							<option>Nicaragua</option>
+							<option>Niger</option>
+							<option>Nigeria</option>
+							<option>Niue</option>
+							<option>Norfolk Island</option>
+							<option>Northern Mariana Islands</option>
+							<option>Norway</option>
+							<option>Oman</option>
+							<option>Pakistan</option>
+							<option>Palau</option>
+							<option>Palestinian Territory, Occupied</option>
+							<option>Panama</option>
+							<option>Papua New Guinea</option>
+							<option>Paraguay</option>
+							<option>Peru</option>
+							<option>Philippines</option>
+							<option>Pitcairn Islands</option>
+							<option>Poland</option>
+							<option>Portugal</option>
+							<option>Puerto Rico</option>
+							<option>Qatar</option>
+							<option>Réunion</option>
+							<option>Romania</option>
+							<option>Russian Federation</option>
+							<option>Rwanda</option>
+							<option>Saint Barthélemy</option>
+							<option>Saint Helena</option>
+							<option>Saint Kitts and Nevis</option>
+							<option>Saint Lucia</option>
+							<option>Saint Martin (French part)</option>
+							<option>Saint Pierre and Miquelon</option>
+							<option>Saint Vincent and the Grenadines</option>
+							<option>Samoa</option>
+							<option>San Marino</option>
+							<option>São Tomé and Príncipe</option>
+							<option>Saudi Arabia</option>
+							<option>Senegal</option>
+							<option>Serbia</option>
+							<option>Seychelles</option>
+							<option>Sierra Leone</option>
+							<option>Singapore</option>
+							<option>Slovakia</option>
+							<option>Slovenia</option>
+							<option>Solomon Islands</option>
+							<option>Somalia</option>
+							<option>South Georgia and the South Sandwich Islands</option>
+							<option>Spain</option>
+							<option>Sri Lanka</option>
+							<option>Sudan</option>
+							<option>Suriname</option>
+							<option>Svalbard and Jan Mayen</option>
+							<option>Sweden</option>
+							<option>Switzerland</option>
+							<option>Syria</option>
+							<option>Taiwan</option>
+							<option>Tajikistan</option>
+							<option>Tanzania</option>
+							<option>Thailand</option>
+							<option>Timor-Leste</option>
+							<option>Togo</option>
+							<option>Tokelau</option>
+							<option>Tonga</option>
+							<option>Trinidad and Tobago</option>
+							<option>Tunisia</option>
+							<option>Turkey</option>
+							<option>Turks and Caicos Islands</option>
+							<option>Tuvalu</option>
+							<option>Uganda</option>
+							<option>Ukraine</option>
+							<option>United Arab Emirates</option>
+							<option>United States Minor Outlying Islands</option>
+							<option>Uruguay</option>
+							<option>Uzbekistan</option>
+							<option>Vanuatu</option>
+							<option>Venezuela</option>
+							<option>Vietnam</option>
+							<option>Virgin Islands, British</option>
+							<option>Virgin Islands, U.S.</option>
+							<option>Wallis and Futuna</option>
+							<option>Western Sahara</option>
+							<option>Yemen</option>
+							<option>Zambia</option>
+							<option>Zimbabwe</option>
+						</select>
+					</div>
+				</div> -->
+
+				<div id="atas_nama-all" class="form-group row">
+					<label id="atas_nama-L" class="col-sm-2 col-form-label">Atas nama:</label>
+					<div class="col-sm-4">
+						<input  class="form-control" type="text" id="atas_nama" name="atas_nama">
+					</div>
+				</div>
+
+				<!-- <label>Mata uang:</label>
+				<select name="mata_uang">
+						<option value = "1">AED United Arab Emirates Dirham</option>
+						<option value = "2">AFN Afghan Afghani</option>
+						<option value = "3">ALL Albanian Lek</option>
+						<option value = "4">AMD Armenian Dram</option>
+						<option value = "5">ANG Netherlands Antillean Guilder</option>
+						<option value = "6">AOA Angolan Kwanza</option>
+						<option value = "7">ARS Argentine Peso</option>
+						<option value = "8">AUD Australian Dollar</option>
+						<option value = "9">AWG Aruban Guilder</option>
+						<option value = "10">AZN Azerbaijani Manat</option>
+						<option value = "11">BAM Bosnia and Herzegovina Convertible Mark</option>
+						<option value = "12">BBD Barbadian Dollar</option>
+						<option value = "13">BDT Bangladeshi Taka</option>
+						<option value = "14">BGN Bulgarian Lev</option>
+						<option value = "15">BHD Bahraini Dinar</option>
+						<option value = "16">BIF Burundian Franc</option>
+						<option value = "17">BMD Bermudian Dollar</option>
+						<option value = "18">BND Brunei Dollar</option>
+						<option value = "19">BOB Bolivian Boliviano</option>
+						<option value = "20">BRL Brazilian Real</option>
+						<option value = "21">BSD Bahamian Dollar</option>
+						<option value = "22">BTN Bhutanese Ngultrum</option>
+						<option value = "23">BWP Botswana Pula</option>
+						<option value = "24">BYN Belarusian Ruble</option>
+						<option value = "25">BYR Belarusian Ruble (expiring)</option>
+						<option value = "26">BZD Belize  Dollar</option>
+						<option value = "27">CAD Canadian Dollar</option>
+						<option value = "28">CDF Congolese Franc</option>
+						<option value = "29">CHF Swiss Franc</option>
+						<option value = "30">CLP Chilean Peso</option>
+						<option value = "31">CNY Chinese Yuan</option>
+						<option value = "32">COP Colombian Peso</option>
+						<option value = "33">CRC Costa Rican Colón</option>
+						<option value = "34">CUC Cuban Convertible Peso</option>
+						<option value = "35">CVE Cape Verdean Escudo</option>
+						<option value = "36">CZK Czech Koruna</option>
+						<option value = "37">DJF Djiboutian Franc</option>
+						<option value = "38">DKK Danish Krone</option>
+						<option value = "39">DOP Dominican Peso</option>
+						<option value = "40">DZD Algerian Dinar</option>
+						<option value = "41">EEK Estonian Kroon (expiring)</option>
+						<option value = "42">EGP Egyptian Pound</option>
+						<option value = "43">ERN Eritrean Nakfa</option>
+						<option value = "44">ETB Ethiopian Birr</option>
+						<option value = "45">EUR Euro</option>
+						<option value = "46">FJD Fijian Dollar</option>
+						<option value = "47">FKP Falkland Island Pound</option>
+						<option value = "48">GBP British Pound</option>
+						<option value = "49">GEL Georgian Lari</option>
+						<option value = "50">GHS Ghanaian Cedi</option>
+						<option value = "51">GIP Gibraltar Pound</option>
+						<option value = "52">GMD Gambian Dalasi</option>
+						<option value = "53">GNF Guinean Franc</option>
+						<option value = "54">GTQ Guatemalan Quetzal</option>
+						<option value = "55">GYD Guyanese Dollar</option>
+						<option value = "56">HKD Hong Kong Dollar</option>
+						<option value = "57">HNL Honduran Lempira</option>
+						<option value = "58">HRK Croatian Kuna</option>
+						<option value = "59">HTG Haitian Gourde</option>
+						<option value = "60">HUF Hungarian Forint</option>
+						<option selected value = "61">IDR Indonesian Rupiah</option>
+						<option value = "62">ILS Israeli New Sheqel</option>
+						<option value = "63">INR Indian Rupee</option>
+						<option value = "64">IQD Iraqi Dinar</option>
+						<option value = "65">IRR Iranian Rial</option>
+						<option value = "66">ISK Icelandic Króna</option>
+						<option value = "67">JMD Jamaican Dollar</option>
+						<option value = "68">JOD Jordanian Dinar</option>
+						<option value = "69">JPY Japanese Yen</option>
+						<option value = "70">KES Kenyan Shilling</option>
+						<option value = "71">KGS Kyrgyzstani Som</option>
+						<option value = "72">KHR Cambodian Riel</option>
+						<option value = "73">KMF Comorian Franc</option>
+						<option value = "74">KPW North Korean Won</option>
+						<option value = "75">KRW South Korean Won</option>
+						<option value = "76">KWD Kuwaiti Dinar</option>
+						<option value = "77">KYD Cayman Islands Dollar</option>
+						<option value = "78">KZT Kazakhstani Tenge</option>
+						<option value = "79">LAK Lao Kip</option>
+						<option value = "80">LBP Lebanese Pound</option>
+						<option value = "81">LKR Sri Lankan Rupee</option>
+						<option value = "82">LRD Liberian Dollar</option>
+						<option value = "83">LSL Lesotho Loti</option>
+						<option value = "84">LTL Lithuanian Litas (expiring)</option>
+						<option value = "85">LVL Latvian Lats (expiring)</option>
+						<option value = "86">LYD Libyan Dinar</option>
+						<option value = "87">MAD Moroccan Dirham</option>
+						<option value = "88">MDL Moldovan Leu</option>
+						<option value = "89">MGA Malagasy Ariary</option>
+						<option value = "90">MKD Macedonian Denar</option>
+						<option value = "91">MMK Myanmar Kyat</option>
+						<option value = "92">MNT Mongolian Tugrik</option>
+						<option value = "93">MOP Macanese Pataca</option>
+						<option value = "94">MRO Mauritanian Ouguiya (expiring)</option>
+						<option value = "95">MRU Mauritanian Ouguiya</option>
+						<option value = "96">MUR Mauritian Rupee</option>
+						<option value = "97">MVR Maldivian Rufiyaa</option>
+						<option value = "98">MWK Malawian Kwacha</option>
+						<option value = "99">MXN Mexican Peso</option>
+						<option value = "100">MYR Malaysian Ringgit</option>
+						<option value = "101">MZN Mozambican Metical</option>
+						<option value = "102">NAD Namibian Dollar</option>
+						<option value = "103">NGN Nigerian Naira</option>
+						<option value = "104">NIO Nicaraguan Córdoba</option>
+						<option value = "105">NOK Norwegian Krone</option>
+						<option value = "106">NPR Nepalese Rupee</option>
+						<option value = "107">NZD New Zealand Dollar</option>
+						<option value = "108">OMR Omani Rial</option>
+						<option value = "109">PAB Panamanian Balboa</option>
+						<option value = "110">PEN Peru Sol</option>
+						<option value = "111">PGK Papua New Guinean Kina</option>
+						<option value = "112">PHP Philippine Peso</option>
+						<option value = "113">PKR Pakistani Rupee</option>
+						<option value = "114">PLN Polish Zloty</option>
+						<option value = "115">PYG Paraguayan Guaraní</option>
+						<option value = "116">QAR Qatari Riyal</option>
+						<option value = "117">RON Romanian Leu</option>
+						<option value = "118">RSD Serbian Dinar</option>
+						<option value = "119">RUB Russian Ruble</option>
+						<option value = "120">RWF Rwandan Franc</option>
+						<option value = "121">SAR Saudi Riyal</option>
+						<option value = "122">SBD Solomon Islands Dollar</option>
+						<option value = "123">SCR Seychellois Rupee</option>
+						<option value = "124">SDG Sudanese Pound</option>
+						<option value = "125">SEK Swedish Krona</option>
+						<option value = "126">SGD Singapore Dollar</option>
+						<option value = "127">SHP Saint Helenian Pound</option>
+						<option value = "128">SKK Slovak Koruna</option>
+						<option value = "129">SLL Sierra Leonean Leone</option>
+						<option value = "130">SOS Somali Shilling</option>
+						<option value = "131">SRD Surinamese Dollar</option>
+						<option value = "132">STD São Tomé and Príncipe Dobra (expiring)</option>
+						<option value = "133">STN São Tomé and Príncipe Dobra</option>
+						<option value = "134">SVC Salvadoran Colón</option>
+						<option value = "135">SYP Syrian Pound</option>
+						<option value = "136">SZL Swazi Lilangeni</option>
+						<option value = "137">THB Thai Baht</option>
+						<option value = "138">TJS Tajikistani Somoni</option>
+						<option value = "139">TMT Turkmenistani Manat</option>
+						<option value = "140">TND Tunisian Dinar</option>
+						<option value = "141">TOP Tongan Pa'anga</option>
+						<option value = "142">TRY Turkish Lira</option>
+						<option value = "143">TTD Trinidad and Tobago Dollar</option>
+						<option value = "144">TWD Taiwanese New Dollar</option>
+						<option value = "145">TZS Tanzanian Shilling</option>
+						<option value = "146">UAH Ukrainian Hryvnia</option>
+						<option value = "147">UGX Ugandan Shilling</option>
+						<option value = "148">USD United States Dollar</option>
+						<option value = "149">UYU Uruguayan Peso</option>
+						<option value = "150">UZS Uzbekistani Som</option>
+						<option value = "151">VEF Venezuela Bolívar</option>
+						<option value = "152">VND Vietnamese Dong</option>
+						<option value = "153">VUV Vanuatu Vatu</option>
+						<option value = "154">WST Samoan Tala</option>
+						<option value = "155">XAF Central African CFA Franc</option>
+						<option value = "156">XCD East Caribbean Dollar</option>
+						<option value = "157">XOF West African CFA Franc</option>
+						<option value = "158">XPF CFP Franc</option>
+						<option value = "159">YER Yemeni Rial</option>
+						<option value = "160">ZAR South African Rand</option>
+						<option value = "161">ZMK Zambian Kwacha (expiring)</option>
+						<option value = "162">ZMW Zambian Kwacha</option>
+						<option value = "163">ZWD Zimbabwean Dollar</option>
+				</select><br> -->
+
+				<!-- <label>Tax basis:</label>
+				<select name="tax_basis">
+						<option value="None">None</option>
+						<option value="Cash Basis">Cash Basis</option>
+						<option selected value="Accrual Basis">Accrual Basis</option>
+				</select><br> -->
+
+				<!-- <label>Tax period:</label>
+				<select name="tax_period">
+						<option value="1 Monthly">1 Monthly</option>
+						<option value="2 Monthly">2 Monthly</option>
+						<option value="3 Monthly">3 Monthly</option>
+						<option value="6 Monthly">6 Monthly</option>
+						<option value="Annually" selected>Annually</option>
+				</select><br> -->
+
+				<!-- <label>Zona waktu:</label>
+				<select name="time_zone">
+						<option value = "1">(UTC) Coordinated Universal Time</option>
+						<option value = "2">(UTC+00:00) Dublin, Edinburgh, Lisbon, London</option>
+						<option value = "3">(UTC+00:00) Monrovia, Reykjavik</option>
+						<option value = "4">(UTC+00:00) Sao Tome</option>
+						<option value = "5">(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna</option>
+						<option value = "6">(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague</option>
+						<option value = "7">(UTC+01:00) Brussels, Copenhagen, Madrid, Paris</option>
+						<option value = "8">(UTC+01:00) Casablanca</option>
+						<option value = "9">(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb</option>
+						<option value = "10">(UTC+01:00) West Central Africa</option>
+						<option value = "11">(UTC+02:00) Amman</option>
+						<option value = "12">(UTC+02:00) Athens, Bucharest</option>
+						<option value = "13">(UTC+02:00) Beirut</option>
+						<option value = "14">(UTC+02:00) Cairo</option>
+						<option value = "15">(UTC+02:00) Chisinau</option>
+						<option value = "16">(UTC+02:00) Damascus</option>
+						<option value = "17">(UTC+02:00) Gaza, Hebron</option>
+						<option value = "18">(UTC+02:00) Harare, Pretoria</option>
+						<option value = "19">(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius</option>
+						<option value = "20">(UTC+02:00) Jerusalem</option>
+						<option value = "21">(UTC+02:00) Kaliningrad</option>
+						<option value = "22">(UTC+02:00) Khartoum</option>
+						<option value = "23">(UTC+02:00) Tripoli</option>
+						<option value = "24">(UTC+02:00) Windhoek</option>
+						<option value = "25">(UTC+03:00) Baghdad</option>
+						<option value = "26">(UTC+03:00) Istanbul</option>
+						<option value = "27">(UTC+03:00) Kuwait, Riyadh</option>
+						<option value = "28">(UTC+03:00) Minsk</option>
+						<option value = "29">(UTC+03:00) Moscow, St. Petersburg</option>
+						<option value = "30">(UTC+03:00) Nairobi</option>
+						<option value = "31">(UTC+03:30) Tehran</option>
+						<option value = "32">(UTC+04:00) Abu Dhabi, Muscat</option>
+						<option value = "33">(UTC+04:00) Astrakhan, Ulyanovsk</option>
+						<option value = "34">(UTC+04:00) Baku</option>
+						<option value = "35">(UTC+04:00) Izhevsk, Samara</option>
+						<option value = "36">(UTC+04:00) Port Louis</option>
+						<option value = "37">(UTC+04:00) Saratov</option>
+						<option value = "38">(UTC+04:00) Tbilisi</option>
+						<option value = "39">(UTC+04:00) Volgograd</option>
+						<option value = "40">(UTC+04:00) Yerevan</option>
+						<option value = "41">(UTC+04:30) Kabul</option>
+						<option value = "42">(UTC+05:00) Ashgabat, Tashkent</option>
+						<option value = "43">(UTC+05:00) Ekaterinburg</option>
+						<option value = "44">(UTC+05:00) Islamabad, Karachi</option>
+						<option value = "45">(UTC+05:00) Qyzylorda</option>
+						<option value = "46">(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi</option>
+						<option value = "47">(UTC+05:30) Sri Jayawardenepura</option>
+						<option value = "48">(UTC+05:45) Kathmandu</option>
+						<option value = "49">(UTC+06:00) Astana</option>
+						<option value = "50">(UTC+06:00) Dhaka</option>
+						<option value = "51">(UTC+06:00) Omsk</option>
+						<option value = "52">(UTC+06:30) Yangon (Rangoon)</option>
+						<option selected value = "53">(UTC+07:00) Bangkok, Hanoi, Jakarta</option>
+						<option value = "54">(UTC+07:00) Barnaul, Gorno-Altaysk</option>
+						<option value = "55">(UTC+07:00) Hovd</option>
+						<option value = "56">(UTC+07:00) Krasnoyarsk</option>
+						<option value = "57">(UTC+07:00) Novosibirsk</option>
+						<option value = "58">(UTC+07:00) Tomsk</option>
+						<option value = "59">(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi</option>
+						<option value = "60">(UTC+08:00) Irkutsk</option>
+						<option value = "61">(UTC+08:00) Kuala Lumpur, Singapore</option>
+						<option value = "62">(UTC+08:00) Perth</option>
+						<option value = "63">(UTC+08:00) Taipei</option>
+						<option value = "64">(UTC+08:00) Ulaanbaatar</option>
+						<option value = "65">(UTC+08:45) Eucla</option>
+						<option value = "66">(UTC+09:00) Chita</option>
+						<option value = "67">(UTC+09:00) Osaka, Sapporo, Tokyo</option>
+						<option value = "68">(UTC+09:00) Pyongyang</option>
+						<option value = "69">(UTC+09:00) Seoul</option>
+						<option value = "70">(UTC+09:00) Yakutsk</option>
+						<option value = "71">(UTC+09:30) Adelaide</option>
+						<option value = "72">(UTC+09:30) Darwin</option>
+						<option value = "73">(UTC+10:00) Brisbane</option>
+						<option value = "74">(UTC+10:00) Canberra, Melbourne, Sydney</option>
+						<option value = "75">(UTC+10:00) Guam, Port Moresby</option>
+						<option value = "76">(UTC+10:00) Hobart</option>
+						<option value = "77">(UTC+10:00) Vladivostok</option>
+						<option value = "78">(UTC+10:30) Lord Howe Island</option>
+						<option value = "79">(UTC+11:00) Bougainville Island</option>
+						<option value = "80">(UTC+11:00) Chokurdakh</option>
+						<option value = "81">(UTC+11:00) Magadan</option>
+						<option value = "82">(UTC+11:00) Norfolk Island</option>
+						<option value = "83">(UTC+11:00) Sakhalin</option>
+						<option value = "84">(UTC+11:00) Solomon Is., New Caledonia</option>
+						<option value = "85">(UTC+12:00) Anadyr, Petropavlovsk-Kamchatsky</option>
+						<option value = "86">(UTC+12:00) Auckland, Wellington</option>
+						<option value = "87">(UTC+12:00) Coordinated Universal Time+12</option>
+						<option value = "88">(UTC+12:00) Fiji</option>
+						<option value = "89">(UTC+12:00) Petropavlovsk-Kamchatsky - Old</option>
+						<option value = "90">(UTC+12:45) Chatham Islands</option>
+						<option value = "91">(UTC+13:00) Coordinated Universal Time+13</option>
+						<option value = "92">(UTC+13:00) Nuku'alofa</option>
+						<option value = "93">(UTC+13:00) Samoa</option>
+						<option value = "94">(UTC+14:00) Kiritimati Island</option>
+						<option value = "95">(UTC-01:00) Azores</option>
+						<option value = "96">(UTC-01:00) Cabo Verde Is.</option>
+						<option value = "97">(UTC-02:00) Coordinated Universal Time-02</option>
+						<option value = "98">(UTC-02:00) Mid-Atlantic - Old</option>
+						<option value = "99">(UTC-03:00) Araguaina</option>
+						<option value = "100">(UTC-03:00) Brasilia</option>
+						<option value = "101">(UTC-03:00) Cayenne, Fortaleza</option>
+						<option value = "102">(UTC-03:00) City of Buenos Aires</option>
+						<option value = "103">(UTC-03:00) Greenland</option>
+						<option value = "104">(UTC-03:00) Montevideo</option>
+						<option value = "105">(UTC-03:00) Punta Arenas</option>
+						<option value = "106">(UTC-03:00) Saint Pierre and Miquelon</option>
+						<option value = "107">(UTC-03:00) Salvador</option>
+						<option value = "108">(UTC-03:30) Newfoundland</option>
+						<option value = "109">(UTC-04:00) Asuncion</option>
+						<option value = "110">(UTC-04:00) Atlantic Time (Canada)</option>
+						<option value = "111">(UTC-04:00) Caracas</option>
+						<option value = "112">(UTC-04:00) Cuiaba</option>
+						<option value = "113">(UTC-04:00) Georgetown, La Paz, Manaus, San Juan</option>
+						<option value = "114">(UTC-04:00) Santiago</option>
+						<option value = "115">(UTC-05:00) Bogota, Lima, Quito, Rio Branco</option>
+						<option value = "116">(UTC-05:00) Chetumal</option>
+						<option value = "117">(UTC-05:00) Eastern Time (US &amp; Canada)</option>
+						<option value = "118">(UTC-05:00) Haiti</option>
+						<option value = "119">(UTC-05:00) Havana</option>
+						<option value = "120">(UTC-05:00) Indiana (East)</option>
+						<option value = "121">(UTC-05:00) Turks and Caicos</option>
+						<option value = "122">(UTC-06:00) Central America</option>
+						<option value = "123">(UTC-06:00) Central Time (US &amp; Canada)</option>
+						<option value = "124">(UTC-06:00) Easter Island</option>
+						<option value = "125">(UTC-06:00) Guadalajara, Mexico City, Monterrey</option>
+						<option value = "126">(UTC-06:00) Saskatchewan</option>
+						<option value = "127">(UTC-07:00) Arizona</option>
+						<option value = "128">(UTC-07:00) Chihuahua, La Paz, Mazatlan</option>
+						<option value = "129">(UTC-07:00) Mountain Time (US &amp; Canada)</option>
+						<option value = "130">(UTC-07:00) Yukon</option>
+						<option value = "131">(UTC-08:00) Baja California</option>
+						<option value = "132">(UTC-08:00) Coordinated Universal Time-08</option>
+						<option value = "133">(UTC-08:00) Pacific Time (US &amp; Canada)</option>
+						<option value = "134">(UTC-09:00) Alaska</option>
+						<option value = "135">(UTC-09:00) Coordinated Universal Time-09</option>
+						<option value = "136">(UTC-09:30) Marquesas Islands</option>
+						<option value = "137">(UTC-10:00) Aleutian Islands</option>
+						<option value = "138">(UTC-10:00) Hawaii</option>
+						<option value = "139">(UTC-11:00) Coordinated Universal Time-11</option>
+						<option value = "140">(UTC-12:00) International Date Line West</option>            
+				</select><br> -->
+				
+				<div id="t_file-all" class="form-group row">
+					<label id="t_file-L" class="col-sm-2 col-form-label">File Chart of Account:</label>
+					<div class="col-sm-4">
+						<select id="t_file" name="t_file"  class="form-control" id="t_file" onchange="buka_nr();">
+							<option value="">pilih file COA</option>
+							<option value="1">General</option>
+							<option value="2">Food and Beverage</option>
+							<option value="3">Umawar Group</option>
+							<option value="4">Custom COA</option>
+						</select><br>
+						<div id="nr">
+							<input  name="BMRI" id="nr1" pattern="[0-9]+" title="Diisinya angka dong :))"
+							disabled = "true" placeholder="Bank Mandiri" style="margin-top: 10px;" class="form-control" type="text">
+							<input  name="BBCA" id="nr2" pattern="[0-9]+" title="Diisinya angka dong :))"
+							disabled = "true" placeholder="BCA" style="margin-top: 10px;" class="form-control" type="text">
+							<input  name="BMTB" id="nr3" pattern="[0-9]+" title="Diisinya angka dong :))"
+							disabled = "true" placeholder="Mandiri Tab. Joint Account Joglo (BMTB)" style="margin-top: 10px;" class="form-control" type="text">
+							<input  name="BMJR" id="nr4" pattern="[0-9]+" title="Diisinya angka dong :))"
+							disabled = "true" placeholder="Mandiri Giro Joglo (BMRJ)" style="margin-top: 10px;" class="form-control" type="text">
+							<input  name="BNGJ" id="nr5" pattern="[0-9]+" title="Diisinya angka dong :))"
+							disabled = "true" placeholder="BNI Giro Joglo" style="margin-top: 10px;" class="form-control" type="text">
+							<input  name="BNEJ" id="nr6" pattern="[0-9]+" title="Diisinya angka dong :))"
+							disabled = "true" placeholder="BNI Escrow Joglo" style="margin-top: 10px;" class="form-control" type="text">
+						</div>
+						<div id="div_file_custom_coa">
+							<br>
+							<input type="file" name="file_custom_coa" id="file_custom_coa"
+							 style="display: none;">
+						</div>
+					</div>
+				</div>
+
+				<div id="submit_btn-all" class="form-group row">
+					<label class="col-sm-2 col-form-label"></label>
+					<div class="col-md-10">
+						
+						<input class="form-control btn btn-lg btn-primary btn-block col-md-6"
+							id="submit_btn" name="submit_btn" type="submit" value="SUBMIT">
+						<img id="loading_ani" src="..\static\loading.gif"
+							alt="Loading kakak ~"  style="display: none;">
+					</div>
+				</div>
+
+			</form>
+    
+    </div>
+</body>
+
+</html>
